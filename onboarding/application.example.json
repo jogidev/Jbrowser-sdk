@@ -25,6 +25,8 @@
     "product_line": ["specialty", "casualty", "property"],
     "channel": ["broker", "direct"],
     "journey_step": ["start", "review", "submission"],
-    "outcome": ["success", "validation_failed", "service_failed", "cancelled"]
+    "outcome": ["success", "validation_failed", "service_failed", "cancelled"],
+    "product_type": ["commercial_property", "general_liability", "specialty_liability"],
+    "user_group": ["broker", "customer", "staff", "unknown"]
   }
 }

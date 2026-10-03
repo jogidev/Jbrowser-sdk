@@ -11,6 +11,8 @@ source, package names, licenses, and dependency graph are preserved.
 For the simplest application setup, start with [RUM onboarding](docs/RUM_ONBOARDING.md).
 Generate a local bundle, use official Datadog agentic setup in the application repo, and paste
 the generated Bits prompt to draft the [monitoring standard](docs/RUM_MONITORING_TEMPLATE.md).
+Use [product segmentation and investigation Notebooks](docs/RUM_SEGMENTATION.md) for product/type
+reports, user groups and session-level RUM/APM/infrastructure evidence.
 See [LogRocket feature coverage and gaps](docs/LOGROCKET_COVERAGE.md).
 
 | Goal                                                          | Guide                                                            |

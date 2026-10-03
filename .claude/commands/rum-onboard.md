@@ -18,3 +18,7 @@ Supply a reviewed beforeSend sanitizer, consent-manager lifecycle, stable routes
 and bounded context. Record evidence in the generated acceptance.md. Do not claim telemetry or
 replay summaries are verified without Datadog evidence. Dashboard/monitor creation uses the separate
 Bits prompt and must match the user's requested scope; production deployment is a separate action.
+
+Define approved product line/type and user-group context at event time using docs/RUM_SEGMENTATION.md.
+Validate unknown, multi-product and identity-switch behavior; confirm resource-to-trace-to-infrastructure
+links. Hand off the generated segmentation meta-prompt and both Notebook cell templates to Bits.
