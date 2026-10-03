@@ -43,7 +43,10 @@
     "json-schemas:sync": "node scripts/json-schemas.ts --update master --build",
     "json-schemas:generate": "node scripts/json-schemas.ts --build",
     "size": "node scripts/show-bundle-size.ts",
-    "woke": "scripts/cli woke"
+    "woke": "scripts/cli woke",
+    "security:test": "node --test onboarding/generate.test.mjs security/*.test.mjs",
+    "security:audit": "node security/audit.mjs",
+    "security:sbom": "node security/generateSbom.mjs"
   },
   "devDependencies": {
     "@datadog/rum-events-format": "DataDog/rum-events-format#commit=88dbfc8f4b389e36faa609e6eb81ee47fb44e2d4",
@@ -51,7 +54,7 @@
     "@jsdevtools/coverage-istanbul-loader": "3.0.5",
     "@microsoft/api-extractor": "7.59.1",
     "@playwright/test": "1.63.0",
-    "@salesforce/cli": "2.150.6",
+    "@salesforce/cli": "2.152.14",
     "@swc/core": "1.16.2",
     "@types/busboy": "1.5.4",
     "@types/chrome": "0.2.9",
@@ -79,7 +82,7 @@
     "html-webpack-plugin": "5.6.8",
     "http-server": "14.1.1",
     "jasmine-core": "3.99.1",
-    "json-schema-to-typescript": "bcaudan/json-schema-to-typescript#bcaudan/add-readonly-support",
+    "json-schema-to-typescript": "bcaudan/json-schema-to-typescript#commit=406ce54242635f4a0181bd573a3cbc896707e4cc",
     "karma": "6.4.4",
     "karma-browserstack-launcher": "1.6.0",
     "karma-chrome-launcher": "3.2.0",
@@ -108,7 +111,9 @@
     "ws": "8.21.3"
   },
   "resolutions": {
-    "rolldown": "1.2.8"
+    "rolldown": "1.2.8",
+    "get-uri/basic-ftp": "6.2.1",
+    "protobufjs": "7.6.5"
   },
   "volta": {
     "node": "26.8.2",

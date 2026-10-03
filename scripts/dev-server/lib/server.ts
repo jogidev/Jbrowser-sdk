@@ -61,7 +61,8 @@ export function runServer({ writeIntakeFile = true }: { writeIntakeFile?: boolea
 }
 
 function listenOnAvailablePort(app: express.Application, port: number): void {
-  const server = app.listen(port)
+  // The sandbox and intake recorder are unauthenticated local test tools.
+  const server = app.listen(port, '127.0.0.1')
   server.on('listening', () => {
     const actualPort = (server.address() as AddressInfo).port
     printLog(`Dev server listening on port ${actualPort}.`)

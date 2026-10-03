@@ -1,0 +1,67 @@
+name: Security readiness
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inventory:
+    name: Onboarding and SBOM integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '26.8.2'
+      - name: Run security regressions
+        run: node --test onboarding/generate.test.mjs security/*.test.mjs
+      - name: Regenerate inventory offline without installation
+        run: node security/generateSbom.mjs
+      - name: Reject stale SBOM
+        run: git diff --exit-code -- security/sbom.cdx.json
+  advisories:
+    name: Dependency advisory gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '26.8.2'
+      - name: Audit all tracked dependency projects
+        run: node security/audit.mjs
+      - name: Publish advisory details
+        if: always()
+        shell: bash
+        run: |
+          if [ -f security/dependency-audit.json ]; then
+            { echo '```json'; cat security/dependency-audit.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+  sdk:
+    name: SDK functionality
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '26.8.2'
+      - name: Install locked dependencies without lifecycle scripts
+        run: node .yarn/releases/yarn-4.18.0.cjs install --immutable --mode=skip-build
+      - name: Build and type-check SDK
+        run: |
+          node .yarn/releases/yarn-4.18.0.cjs build
+          node .yarn/releases/yarn-4.18.0.cjs typecheck
+      - name: Run browser unit suite
+        run: |
+          export CHROME_BIN="$(command -v google-chrome)"
+          node .yarn/releases/yarn-4.18.0.cjs test:unit

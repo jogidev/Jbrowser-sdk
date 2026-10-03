@@ -1,6 +1,15 @@
 name: 'CodeQL config'
 
 paths:
+  - onboarding
+  - security
+  - scripts
+  - packages/browser-debugger/src
+  - packages/browser-rum-react/src
+  - packages/browser-rum-angular/src
+  - packages/browser-rum-vue/src
+  - packages/browser-rum-nextjs/src
+  - packages/browser-rum-nuxt/src
   - packages/browser-core/src
   - packages/browser-logs/src
   - packages/browser-rum/src

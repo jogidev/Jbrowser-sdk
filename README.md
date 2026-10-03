@@ -50,6 +50,13 @@ yarn typecheck
 yarn test:unit
 ```
 
+## Security and dependency inventory
+
+See [the security assessment and enterprise release gates](docs/SECURITY_ASSESSMENT.md),
+[security policy](SECURITY.md), and [SBOM instructions](security/README.md).
+The [CycloneDX SBOM](security/sbom.cdx.json) covers all tracked dependency lockfiles.
+Outstanding advisories block the dependency CI gate.
+
 ## License
 
 [Apache License 2.0](LICENSE). Preserve [NOTICE](NOTICE), [LEGAL](LEGAL), and

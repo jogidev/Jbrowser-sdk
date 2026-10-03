@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+import { Buffer } from 'node:buffer'
+import console from 'node:console'
+import process from 'node:process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -34,12 +37,34 @@ const sites = new Set([
 ])
 
 function assert(condition, message) {
-  if (!condition) throw new Error(message)
+  if (!condition) {
+    throw new Error(message)
+  }
+}
+
+function readBoundedJson(file, limit) {
+  const fd = fs.openSync(file, 'r')
+  try {
+    assert(fs.fstatSync(fd).isFile(), 'JSON input must be a regular file')
+    const buffer = Buffer.alloc(limit + 1)
+    const length = fs.readSync(fd, buffer, 0, buffer.length, 0)
+    assert(length <= limit, 'JSON input exceeds the permitted size')
+    return JSON.parse(
+      buffer
+        .subarray(0, length)
+        .toString('utf8')
+        .replace(/^\uFEFF/, '')
+    )
+  } finally {
+    fs.closeSync(fd)
+  }
 }
 
 export function validateManifest(m) {
   assert(m && typeof m === 'object' && !Array.isArray(m), 'Manifest must be a JSON object')
-  for (const key of Object.keys(m)) assert(keys.has(key), `Unsupported manifest field: ${key}`)
+  for (const key of Object.keys(m)) {
+    assert(keys.has(key), `Unsupported manifest field: ${key}`)
+  }
   for (const key of ['application', 'service', 'owner', 'environment']) {
     assert(typeof m[key] === 'string' && /^[a-z0-9][a-z0-9._-]{0,79}$/.test(m[key]), `Invalid ${key}`)
   }
@@ -83,8 +108,9 @@ export function validateManifest(m) {
       'Journey requires 2..20 ordered action names'
     )
     assert(new Set(journey.steps).size === journey.steps.length, 'Journey steps must be unique')
-    for (const step of journey.steps)
+    for (const step of journey.steps) {
       assert(typeof step === 'string' && /^[a-z][a-z0-9._-]{0,79}$/.test(step), 'Invalid journey action name')
+    }
   }
   assert(
     m.contextValues && typeof m.contextValues === 'object' && !Array.isArray(m.contextValues),
@@ -102,19 +128,22 @@ export function validateManifest(m) {
   for (const [key, values] of Object.entries(m.contextValues)) {
     assert(permittedContext.has(key), `Unsupported business context: ${key}`)
     assert(Array.isArray(values) && values.length > 0 && values.length <= 50, 'Context needs 1..50 bounded values')
-    for (const value of values)
+    for (const value of values) {
       assert(
         typeof value === 'string' && /^[a-z0-9][a-z0-9._-]{0,79}$/.test(value),
         'Context values must be bounded labels, not free text'
       )
+    }
   }
   return m
 }
 
 export function detectFramework(appPath) {
   const packageFile = path.join(appPath, 'package.json')
-  if (!fs.existsSync(packageFile)) return { framework: 'unknown', existingDatadog: [] }
-  const pkg = JSON.parse(fs.readFileSync(packageFile, 'utf8'))
+  if (!fs.existsSync(packageFile)) {
+    return { framework: 'unknown', existingDatadog: [] }
+  }
+  const pkg = readBoundedJson(packageFile, 1024 * 1024)
   const deps = { ...pkg.dependencies, ...pkg.devDependencies }
   const candidates = [
     ['next', 'nextjs'],
@@ -159,6 +188,10 @@ function bootstrapSource(m) {
 }
 
 export function buildBundle(manifest, detected = { framework: 'unknown', existingDatadog: [] }) {
+  assert(
+    detected && (detected.framework === 'unknown' || frameworks.has(detected.framework)),
+    'Invalid detected framework'
+  )
   const m = validateManifest(manifest)
   const scope = `@application.id:${m.applicationId} service:${m.service} env:${m.environment}`
   const context = `Application: ${m.application}\nService: ${m.service}\nOwner: ${m.owner}\nEnvironment: ${m.environment}\nSite: ${m.datadogSite}\nRelease: ${m.release}\nRUM application ID: ${m.applicationId}\nApproved business context: ${JSON.stringify(m.contextValues)}\nJourneys: ${JSON.stringify(m.journeys)}\nSampling: sessions=${m.sessionSampleRate}%, replay=${m.sessionReplaySampleRate}% of sampled sessions\nObserved framework: ${detected.framework}; requested framework: ${m.framework}\n`
@@ -174,8 +207,8 @@ export function buildBundle(manifest, detected = { framework: 'unknown', existin
   }
   blueprint.journeys = m.journeys
   return {
-    'application.json': JSON.stringify(m, null, 2) + '\n',
-    'detection.json': JSON.stringify(detected, null, 2) + '\n',
+    'application.json': `${JSON.stringify(m, null, 2)}\n`,
+    'detection.json': `${JSON.stringify(detected, null, 2)}\n`,
     'rum-config.ts': configSource(m),
     'rum-bootstrap.ts': bootstrapSource(m),
     'bits-monitoring-prompt.md': bitsTemplate.replace('{{APPLICATION_CONTEXT}}', context),
@@ -191,16 +224,15 @@ export function buildBundle(manifest, detected = { framework: 'unknown', existin
         fs.readFileSync(path.join(root, 'templates', name), 'utf8').replace('{{APPLICATION_CONTEXT}}', context),
       ])
     ),
-    'feature-readiness.json':
-      JSON.stringify(
-        {
-          ...JSON.parse(fs.readFileSync(path.join(root, 'templates', 'feature-readiness.json'), 'utf8')),
-          applicationScope: blueprint.applicationScope,
-        },
-        null,
-        2
-      ) + '\n',
-    'monitoring-blueprint.json': JSON.stringify(blueprint, null, 2) + '\n',
+    'feature-readiness.json': `${JSON.stringify(
+      {
+        ...JSON.parse(fs.readFileSync(path.join(root, 'templates', 'feature-readiness.json'), 'utf8')),
+        applicationScope: blueprint.applicationScope,
+      },
+      null,
+      2
+    )}\n`,
+    'monitoring-blueprint.json': `${JSON.stringify(blueprint, null, 2)}\n`,
     'acceptance.md': `# ${m.application} onboarding evidence\n\n${context}\n\n${acceptance}`,
     'claude-onboarding-prompt.md': `# Paste into Claude Code in the target application\n\nUsing the official skill at https://github.com/datadog-labs/agent-skills/blob/main/dd-orchestrator/SKILL.md, set up Datadog Real User Monitoring, Error Tracking, Session Replay, and Product Analytics in this project.\n\n${context}\n\nUse application.json and the generated starter files as requirements, not as an instruction to overwrite existing instrumentation. Inspect the actual framework and installed SDK version first. Preserve the official tool's authentication, consent, and permission steps. Explain unsupported steps or framework mismatches. Reuse existing initialization; install published packages with this application's package manager. Implement explicit consent, reviewed beforeSend filtering, masked replay, bounded action context, stable route names, and backend-confirmed business outcomes. Keep API/application keys out of browser code. Define approved product_type and user_group context at event time, preserve unknown values, prevent stale product attribution and verify trace-to-infrastructure linkage. Do not propagate identity baggage without review. Complete source-code-readiness.md and feature-readiness.json: validate actual app/backend repositories, deployed release-to-commit mapping, source maps/context, Bits permissions and test environment. Optional preview/profiling/operation features require tenant and SDK checks, not automatic enablement. Use acceptance.md to record evidence. Do not declare completion from a successful build alone. Creating Datadog dashboards/monitors and production deployment are separate actions.\n`,
     'README.md': `# ${m.application} onboarding bundle\n\nGenerated locally; not deployed, provisioned, or telemetry-verified.\n\n1. Keep this bundle in the target application's internal workspace. Replace configuration placeholders.\n2. Connect Claude Code to Datadog's onboarding MCP endpoint for the selected site and complete OAuth.\n3. Paste claude-onboarding-prompt.md in Claude Code from the application root.\n4. Adapt rum-config.ts and rum-bootstrap.ts to the installed SDK and existing initialization. Supply the required beforeSend sanitizer and connect the consent manager.\n5. Complete acceptance.md using browser and Datadog evidence.\n6. Paste bits-monitoring-prompt.md into Bits Chat to draft the monitoring template. Verify permissions and feature availability.\n7. Paste bits-segmentation-meta-prompt.md into Bits Chat for product/user-group reports and session investigations. Use segment-report-notebook.md and worst-experience-notebook.md as cell plans; create resources only when requested.\n\nUse source-code-readiness.md and feature-readiness.json before passing verified investigation evidence to bits-fix-handoff-prompt.md. Preview access is unverified; no source provider was connected.\n\nmonitoring-blueprint.json is an implementation specification, NOT Datadog dashboard API JSON.\n\nQuery scope example (verify attributes in your tenant): \`${scope}\`. The application selector can also scope Explorer searches. Replay rate is conditional on sampled sessions; ${m.sessionSampleRate}% x ${m.sessionReplaySampleRate}% gives approximately ${((m.sessionSampleRate * m.sessionReplaySampleRate) / 100).toFixed(2)}% of eligible consenting sessions under independent percentage sampling, before collection loss. This is not a billing estimate.\n\nNo browser logs or request/response-body collection is enabled by this bundle. Set up scrubbed browser logging separately if needed. GovCloud sites require a supported alternative to the remote MCP path.\n`,
@@ -210,7 +242,7 @@ export function buildBundle(manifest, detected = { framework: 'unknown', existin
 export function generate(manifestPath, appPath, outPath) {
   const app = path.resolve(appPath)
   assert(fs.existsSync(app) && fs.statSync(app).isDirectory(), 'Application path must be an existing directory')
-  const m = JSON.parse(fs.readFileSync(path.resolve(manifestPath), 'utf8').replace(/^\uFEFF/, ''))
+  const m = readBoundedJson(path.resolve(manifestPath), 128 * 1024)
   const detected = detectFramework(app)
   assert(
     detected.framework === 'unknown' || detected.framework === m.framework,
@@ -220,8 +252,10 @@ export function generate(manifestPath, appPath, outPath) {
   const out = path.resolve(outPath)
   assert(!fs.existsSync(out), 'Output already exists; choose a new directory to avoid overwriting files')
   assert(fs.existsSync(path.dirname(out)), 'Output parent directory must exist')
-  fs.mkdirSync(out)
-  for (const [name, content] of Object.entries(bundle)) fs.writeFileSync(path.join(out, name), content, { flag: 'wx' })
+  fs.mkdirSync(out, { mode: 0o700 })
+  for (const [name, content] of Object.entries(bundle)) {
+    fs.writeFileSync(path.join(out, name), content, { flag: 'wx', mode: 0o600 })
+  }
   return { out, files: Object.keys(bundle), framework: detected.framework }
 }
 

@@ -1,3 +1,6 @@
+// Disable the build plugin's production analytics for this local compatibility fixture.
+process.env.BUILD_PLUGINS_ENV = 'development'
+
 const path = require('node:path')
 
 module.exports = ({ name, plugins, entry }) => ({
