@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "name": "Web Experience Standard v1",
+  "artifactType": "implementation-specification-not-datadog-api-json",
+  "applicationScope": null,
+  "filters": [
+    "application",
+    "service",
+    "environment",
+    "release",
+    "view",
+    "device",
+    "browser",
+    "journey",
+    "approved_cohort"
+  ],
+  "analysisWindow": "24h",
+  "baseline": "previous comparable 24h; calibrate thresholds using 7-14 days",
+  "minimumEligibleSessions": 100,
+  "minimumVolumeIs": "local-review-convention-not-vendor-limit",
+  "sections": [
+    {
+      "id": "confidence",
+      "title": "Data confidence",
+      "resources": [
+        "coverage and intake status",
+        "full-traffic versus retained dataset labels",
+        "consent, sampling and missing measures"
+      ]
+    },
+    {
+      "id": "experience",
+      "title": "Executive experience",
+      "resources": [
+        "eligible sessions/users",
+        "error-affected session percentage",
+        "frustration-affected session percentage",
+        "journey completion"
+      ]
+    },
+    {
+      "id": "sessions",
+      "title": "Session intelligence",
+      "resources": [
+        "native replay summaries and smart chapters",
+        "representative success/failure/slow/frustration playlists",
+        "timestamped evidence cards"
+      ]
+    },
+    {
+      "id": "hotspots",
+      "title": "UX hotspots",
+      "resources": [
+        "affected-session rankings by view and action",
+        "native click maps",
+        "native scroll maps",
+        "native top elements",
+        "Watchdog outliers"
+      ]
+    },
+    {
+      "id": "performance",
+      "title": "Performance",
+      "resources": ["mobile/desktop p75 LCP, INP, CLS", "view loading time", "slow resources", "long tasks"]
+    },
+    {
+      "id": "errors",
+      "title": "Errors and network",
+      "resources": [
+        "Error Tracking issues by affected users",
+        "failed resources with denominators",
+        "source-map verification",
+        "APM and scrubbed browser-log drilldowns"
+      ]
+    },
+    {
+      "id": "journeys",
+      "title": "Product journeys",
+      "resources": ["ordered funnels", "drop-off by step", "pathways", "cohorts", "adoption", "retention"]
+    },
+    {
+      "id": "release",
+      "title": "Release and flags",
+      "resources": ["release comparison", "feature flag segmentation", "cohort-normalized baseline"]
+    },
+    {
+      "id": "response",
+      "title": "Response",
+      "resources": [
+        "owner and monitor status",
+        "prioritized evidence-backed backlog",
+        "runbook and Synthetic corroboration"
+      ]
+    }
+  ],
+  "sessionSummary": {
+    "nativeEligibility": { "minimumActions": 4, "minimumDurationSeconds": 45, "verifyTenantAvailability": true },
+    "fallback": "accessible-event-summary-explicitly-labeled-not-replay-analysis",
+    "fields": [
+      "scope",
+      "session link",
+      "observed journey",
+      "ordered timestamped events",
+      "friction",
+      "outcome or unknown",
+      "facts vs hypotheses",
+      "reproduction evidence",
+      "owner",
+      "confidence"
+    ]
+  },
+  "goodExperienceTargets": {
+    "percentile": 75,
+    "largestContentfulPaintMilliseconds": 2500,
+    "interactionToNextPaintMilliseconds": 200,
+    "cumulativeLayoutShift": 0.1,
+    "segmentByDevice": true,
+    "notAutomaticPagingThresholds": true
+  },
+  "monitorFamilies": [
+    "error-affected sessions",
+    "failed resources",
+    "frustration",
+    "web vitals",
+    "confirmed journey failures",
+    "intake loss with independent Synthetic corroboration"
+  ],
+  "honestGaps": [
+    "Redux state/action replay",
+    "HTTP body/header parity",
+    "CPU/memory/crash diagnostic parity",
+    "conversion-propensity clickmaps",
+    "AI feedback-source consolidation",
+    "autonomous fix dispatch"
+  ],
+  "publication": "Draft and validate resources in the tenant; no live resource is provisioned by this specification"
+}

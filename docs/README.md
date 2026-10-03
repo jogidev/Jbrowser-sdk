@@ -1,5 +1,13 @@
 # Documentation
 
+## Application team entry points
+
+- [Visual RUM onboarding guide](RUM_ONBOARDING.md)
+- [Monitoring standard and layout](RUM_MONITORING_TEMPLATE.md)
+- [LogRocket coverage and honest gaps](LOGROCKET_COVERAGE.md)
+- [Local starter generator](../onboarding/README.md)
+- [Copy-ready Bits Chat prompt](../onboarding/templates/bits-monitoring-prompt.md)
+
 ## Policy
 
 When making changes that impact development workflows or architecture, update the relevant document (see reference below).
