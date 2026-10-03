@@ -1,3 +1,0 @@
-rulesets:
-ignore:
-  - '**/*' # disable static analysis
