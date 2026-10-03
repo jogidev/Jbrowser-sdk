@@ -49,3 +49,10 @@ Confirmed impact / product and technical owners / proposed fix or instrumentatio
 criteria / follow-up evidence / links back to segment report: pending. Do not auto-remediate.
 If several sessions share an approved pseudonymous identity, link separate case summaries and
 state the window and observed scope before any user-level synthesis.
+
+## 7. Source fix and release verification
+
+Record actual repo/path, deployed commit, source resolution, native investigation type and actual
+Bits session/PR URLs. Link source-code-readiness.md and the fix handoff. Record repro test and CI
+results, reviewer/rollback, deployed fix version and matched-segment post-release evidence. Keep
+patch-ready, merged, deployed and telemetry-verified states distinct.

@@ -1,0 +1,166 @@
+{
+  "artifactType": "readiness-specification-not-datadog-api-json",
+  "documentationReviewedAt": "2026-10-03",
+  "tenantVerified": false,
+  "resourcesChanged": false,
+  "features": [
+    {
+      "id": "product-analytics",
+      "documentationStatus": "Documented product",
+      "source": "https://docs.datadoghq.com/product_analytics/",
+      "prerequisites": [
+        "Application enablement",
+        "Behavioral dataset coverage",
+        "Approved identity and event contract"
+      ],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "usability-detection",
+      "documentationStatus": "Preview",
+      "source": "https://docs.datadoghq.com/product_analytics/usability/",
+      "prerequisites": ["Product Analytics", "Session Replay", "Saved funnel", "session_replay_analysis_write"],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "single-view-ai",
+      "documentationStatus": "Verify current documentation and tenant status",
+      "source": "https://docs.datadoghq.com/real_user_monitoring/ai_investigations/single_view_ai_investigation/",
+      "prerequisites": ["Selected RUM view", "Accessible evidence"],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "multi-view-ai",
+      "documentationStatus": "Preview",
+      "source": "https://docs.datadoghq.com/real_user_monitoring/ai_investigations/multi_view_ai_investigation/",
+      "prerequisites": ["Browser RUM", "View and supported vital", "Preview access"],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "operation-ai",
+      "documentationStatus": "Preview",
+      "source": "https://docs.datadoghq.com/real_user_monitoring/ai_investigations/operation_ai_investigation/",
+      "prerequisites": ["RUM without Limits", "Defined operation", "Preview access"],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "journey-monitoring",
+      "documentationStatus": "Preview",
+      "source": "https://docs.datadoghq.com/journey_monitoring/",
+      "prerequisites": ["At least one: RUM without Limits, Product Analytics, Synthetics", "Preview access"],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "browser-profiling",
+      "documentationStatus": "Browser setup documented; verify browser support",
+      "source": "https://docs.datadoghq.com/real_user_monitoring/correlate_with_other_telemetry/profiling/",
+      "prerequisites": [
+        "Browser SDK >=6.12",
+        "Document-Policy js-profiling",
+        "Quota/CSP/proxy and script CORS",
+        "Reviewed sample rate"
+      ],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "retention-widget",
+      "documentationStatus": "Preview",
+      "source": "https://docs.datadoghq.com/dashboards/widgets/retention/",
+      "prerequisites": ["Product Analytics", "Approved usr.id", "Preview access"],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "analytics-query-api",
+      "documentationStatus": "Query endpoints Preview",
+      "source": "https://docs.datadoghq.com/api/latest/product-analytics/",
+      "prerequisites": ["Verified current endpoint schema/site/permissions", "Internal server-side credentials"],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "managed-archive",
+      "documentationStatus": "Preview",
+      "source": "https://docs.datadoghq.com/real_user_monitoring/managed_archive/",
+      "prerequisites": ["Archive coverage and recovery permissions", "Replay coverage separately verified"],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "bits-code",
+      "documentationStatus": "Documented coding workflow; verify site/access",
+      "source": "https://docs.datadoghq.com/bits_ai/bits_code/setup/",
+      "prerequisites": [
+        "bits_dev_write",
+        "Supported source integration",
+        "Service/repository and revision mapping",
+        "Test environment"
+      ],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    },
+    {
+      "id": "agentic-onboarding",
+      "documentationStatus": "Preview",
+      "source": "https://docs.datadoghq.com/real_user_monitoring/application_monitoring/agentic_onboarding/",
+      "prerequisites": ["Supported framework/site and official onboarding flow"],
+      "tenantStatus": "unknown",
+      "owner": null,
+      "evidenceUrl": null,
+      "checkedAt": null,
+      "decision": "not-selected",
+      "fallback": "Use existing scoped RUM/analytics evidence and manual investigation; report missing capability"
+    }
+  ]
+}

@@ -78,7 +78,7 @@ identity remain unknown. APM/logs/infra resources must be monitored and accessib
 
 ## First pilot
 
-Generate the twelve-file bundle, validate context on two products and two approved roles, and test
+Generate the fifteen-file bundle, validate context on two products and two approved roles, and test
 anonymous/login/logout/account switching plus a multi-product session. Verify one failing and one
 successful journey with trace linkage. Run the meta-prompt, inspect counts and attribution, and
 complete the generated acceptance evidence before extending to more applications.

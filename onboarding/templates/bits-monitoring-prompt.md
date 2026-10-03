@@ -104,7 +104,7 @@ Map them to native Datadog resources, extra products/configuration, custom imple
 
 Do not claim automatic Redux action/state recording, request/response-body replay, identical
 browser CPU/memory/crash diagnostics, conversion-propensity clickmaps, Galileo feedback-source
-consolidation, or autonomous code repair. For those requirements, propose bounded state-transition
+consolidation, or unattended merge/deployment. For those requirements, propose bounded state-transition
 events, redacted diagnostics, analyst comparisons, separately approved integrations, or a gap.
 Any fix-agent handoff must include evidence and a reviewed change path; no auto-remediation is
 enabled by this prompt.
@@ -131,3 +131,12 @@ Documentation: [Bits Chat](https://docs.datadoghq.com/bits_ai/bits_chat/),
 
 For product/user-group reporting and correlated poor-experience Notebooks, run the generated
 `bits-segmentation-meta-prompt.md` after validating event-time product attribution and identity coverage.
+
+## Optional feature and fix routing
+
+Inspect feature-readiness.json and source-code-readiness.md. When actually available, use saved-funnel
+Usability Issue Detection for friction, multi-view investigation for recurring supported-vital
+bottlenecks, and operation investigation for defined technical steps (requires RUM without Limits).
+Verify Preview access, site and permissions before invoking tools; otherwise use manual evidence.
+For code-attributed findings, complete bits-fix-handoff-prompt.md with actual revision and evidence.
+No preview features, source write access, experiments or remediation automations are enabled here.

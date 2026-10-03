@@ -54,3 +54,5 @@ yarn test:unit
 
 [Apache License 2.0](LICENSE). Preserve [NOTICE](NOTICE), [LEGAL](LEGAL), and
 [third-party attribution](LICENSE-3rdparty.csv). This fork is not an official Datadog release.
+
+See [Product Analytics/Preview readiness and Bits fixes](docs/RUM_BITS_FIX_WORKFLOW.md).

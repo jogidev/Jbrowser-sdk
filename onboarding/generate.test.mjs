@@ -13,7 +13,7 @@ test('bundle uses declared scope without API keys and remains a specification', 
   const m = example()
   m.allowedTracingOrigins = ['https://api.example.com']
   const files = buildBundle(m)
-  assert.equal(Object.keys(files).length, 12)
+  assert.equal(Object.keys(files).length, 15)
   const blueprint = JSON.parse(files['monitoring-blueprint.json'])
   assert.equal(blueprint.applicationScope.service, m.service)
   assert.match(blueprint.artifactType, /not-datadog-api-json/)
@@ -142,7 +142,7 @@ test('writes only a new bundle and refuses to overwrite existing output', () => 
     const manifest = path.join(temp, 'application.json')
     fs.writeFileSync(manifest, JSON.stringify(example()))
     const out = path.join(temp, 'bundle')
-    assert.equal(generate(manifest, app, out).files.length, 12)
+    assert.equal(generate(manifest, app, out).files.length, 15)
     assert.equal(fs.readFileSync(path.join(app, 'package.json'), 'utf8'), pkgText)
     assert.deepEqual(fs.readdirSync(app), ['package.json'])
     const before = fs.readFileSync(path.join(out, 'rum-config.ts'), 'utf8')
@@ -184,4 +184,25 @@ test('segmentation handoffs inherit bounded context and exclude credentials', ()
   }
   assert.match(bundle['rum-bootstrap.ts'], /product_type/)
   assert.match(bundle['rum-bootstrap.ts'], /user_group/)
+})
+
+test('fix handoff and feature readiness are scoped and never imply tenant activation', () => {
+  const m = example()
+  m.clientToken = 'private-token'
+  const bundle = buildBundle(m)
+  const readiness = JSON.parse(bundle['feature-readiness.json'])
+  assert.equal(readiness.applicationScope.service, m.service)
+  assert.equal(readiness.tenantVerified, false)
+  assert.equal(readiness.resourcesChanged, false)
+  assert.ok(
+    readiness.features.every(
+      (f) => f.tenantStatus === 'unknown' && f.decision === 'not-selected' && f.evidenceUrl === null
+    )
+  )
+  for (const file of ['bits-fix-handoff-prompt.md', 'source-code-readiness.md']) {
+    assert.match(bundle[file], /specialty-portal-web/)
+    assert.doesNotMatch(bundle[file], /private-token|\{\{APPLICATION_CONTEXT\}\}/)
+  }
+  assert.match(bundle['rum-bootstrap.ts'], /clearAccount/)
+  assert.doesNotMatch(bundle['rum-config.ts'], /profilingSampleRate|enableExperimentalFeatures/)
 })

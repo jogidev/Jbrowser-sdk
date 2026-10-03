@@ -8,41 +8,41 @@ equivalence. Verify each feature in your Datadog tenant and installed SDK.
 products or resources. **Custom** is a proposed workflow. **Gap** means equivalence is not
 established. Every requirement has a home in the standard, including unresolved gaps.
 
-| LogRocket capability                  | Datadog route / standard section                | Coverage and limitation                                               |
-| ------------------------------------- | ----------------------------------------------- | --------------------------------------------------------------------- |
-| DOM session replay                    | Session Replay / session intelligence           | Native; configure recording, consent and retention                    |
-| Galileo session highlights            | AI replay summaries and smart chapters          | Native subject to availability and eligibility                        |
-| Multi-session highlights for one user | Playlists and analyst evidence cards            | Custom; equivalent automated cross-session synthesis not established  |
-| Click heatmaps                        | Browser Session Replay click maps               | Native; action collection and usable replay background required       |
-| Scrollmaps / below-fold visibility    | Scroll maps / hotspots                          | Native; validate version and layout/device snapshot                   |
-| Top interacted elements               | Top Elements / hotspots                         | Native; frequency alone does not establish friction                   |
-| Conversion-propensity clickmaps       | Click map to funnel/cohort comparison           | Partial/custom; identical propensity overlay not established          |
-| Rage, dead and error clicks           | RUM frustration signals / hotspots              | Native; verify available signal fields                                |
-| AI issue severity/prioritization      | Error Tracking impact, Watchdog and Bits triage | Configure/custom; not identical to Galileo severity model             |
-| AI non-converting-session insights    | Funnels plus replay/evidence review             | Native funnel, custom synthesis; automated equivalent not established |
-| JavaScript errors and grouping        | RUM + Error Tracking                            | Configure; test grouping and affected-user/session counts             |
-| Source-level stack traces             | Source maps and Error Tracking                  | Configure; verify supported debug-ID or service/version matching      |
-| Network timings/failures              | RUM resources, Dev Tools and APM                | Native/configure; backend tracing and CORS are separate               |
-| Request/response headers and bodies   | Redacted app/backend diagnostics                | Gap/custom; no automatic payload-capture parity                       |
-| Console context                       | Browser Logs and replay Dev Tools               | Configure; only collected, scrubbed and retained logs appear          |
-| Redux actions and state diffs         | Bounded state-transition events                 | Gap/custom; no automatic Redux history parity; exclude raw state      |
-| Page performance / long tasks         | Web Vitals, view/resource measures              | Native; use current LCP/INP/CLS and supported measures                |
-| CPU/memory and crash diagnostics      | Evaluate profiling/diagnostics separately       | Gap; core RUM does not establish identical diagnostic capture         |
-| Conversion funnels                    | Product Analytics ordered funnels               | Native; verify outcome semantics, identity and windows                |
-| Paths and journeys                    | Product Analytics Pathways                      | Native; normalize view/action names                                   |
-| Cohorts and segmentation              | Users & Segments, approved filters              | Native/configure; consistent identity/cohort definitions              |
-| Retention and adoption                | Product Analytics retention/analytics           | Native; consent, identity and return-window definitions matter        |
-| Autocapture / event definitions       | Automatic views/clicks + business actions       | Partial; a click does not prove a business outcome                    |
-| Dashboards and trends                 | Dashboards, notebooks, analytics views          | Native; replay/heatmap pages may need link-outs                       |
-| Alerts and issue digests              | RUM monitors, issue alerts, workflows           | Configure; delivery is not enabled by this repository                 |
-| Release and flag analysis             | service/env/version and flag evaluations        | Configure; comparison is association, not causal proof                |
-| Support handoff / annotations         | Replay links, comments and playlists            | Native/configure; no automatic public/external sharing                |
-| Export / warehouse analysis           | RUM exports/APIs and downstream pipeline        | Configure; limits/retention differ; not full-replay export parity     |
-| AI feedback-source consolidation      | Separate feedback integration                   | Gap/custom; native multi-source equivalent not established            |
-| Natural-language product questions    | Bits Chat with available tools/data             | Configure; actual RUM tool access must be verified                    |
-| MCP / coding-agent handoff            | Datadog MCP and Claude evidence package         | Configure; code changes remain reviewed                               |
-| Automatic fix-agent dispatch          | Separately designed remediation workflow        | Gap/custom; this template does not dispatch agents                    |
-| Privacy and masking                   | Consent, SDK filtering and Datadog roles        | Configure; DOM masking does not scrub all event fields                |
+| LogRocket capability                  | Datadog route / standard section                | Coverage and limitation                                                                            |
+| ------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| DOM session replay                    | Session Replay / session intelligence           | Native; configure recording, consent and retention                                                 |
+| Galileo session highlights            | AI replay summaries and smart chapters          | Native subject to availability and eligibility                                                     |
+| Multi-session highlights for one user | Playlists and analyst evidence cards            | Custom; equivalent automated cross-session synthesis not established                               |
+| Click heatmaps                        | Browser Session Replay click maps               | Native; action collection and usable replay background required                                    |
+| Scrollmaps / below-fold visibility    | Scroll maps / hotspots                          | Native; validate version and layout/device snapshot                                                |
+| Top interacted elements               | Top Elements / hotspots                         | Native; frequency alone does not establish friction                                                |
+| Conversion-propensity clickmaps       | Click map to funnel/cohort comparison           | Partial/custom; identical propensity overlay not established                                       |
+| Rage, dead and error clicks           | RUM frustration signals / hotspots              | Native; verify available signal fields                                                             |
+| AI issue severity/prioritization      | Error Tracking impact, Watchdog and Bits triage | Configure/custom; not identical to Galileo severity model                                          |
+| AI non-converting-session insights    | Saved funnels, usability analysis and replay    | Native funnel; Usability Issue Detection Preview requires Product Analytics + replay; verify scope |
+| JavaScript errors and grouping        | RUM + Error Tracking                            | Configure; test grouping and affected-user/session counts                                          |
+| Source-level stack traces             | Source maps and Error Tracking                  | Configure; verify supported debug-ID or service/version matching                                   |
+| Network timings/failures              | RUM resources, Dev Tools and APM                | Native/configure; backend tracing and CORS are separate                                            |
+| Request/response headers and bodies   | Redacted app/backend diagnostics                | Gap/custom; no automatic payload-capture parity                                                    |
+| Console context                       | Browser Logs and replay Dev Tools               | Configure; only collected, scrubbed and retained logs appear                                       |
+| Redux actions and state diffs         | Bounded state-transition events                 | Gap/custom; no automatic Redux history parity; exclude raw state                                   |
+| Page performance / long tasks         | Web Vitals, view/resource measures              | Native; use current LCP/INP/CLS and supported measures                                             |
+| CPU/memory and crash diagnostics      | Evaluate profiling/diagnostics separately       | Gap; core RUM does not establish identical diagnostic capture                                      |
+| Conversion funnels                    | Product Analytics ordered funnels               | Native; verify outcome semantics, identity and windows                                             |
+| Paths and journeys                    | Product Analytics Pathways                      | Native; normalize view/action names                                                                |
+| Cohorts and segmentation              | Users & Segments, approved filters              | Native/configure; consistent identity/cohort definitions                                           |
+| Retention and adoption                | Product Analytics retention/analytics           | Native; consent, identity and return-window definitions matter                                     |
+| Autocapture / event definitions       | Automatic views/clicks + business actions       | Partial; a click does not prove a business outcome                                                 |
+| Dashboards and trends                 | Dashboards, notebooks, analytics views          | Native; replay/heatmap pages may need link-outs                                                    |
+| Alerts and issue digests              | RUM monitors, issue alerts, workflows           | Configure; delivery is not enabled by this repository                                              |
+| Release and flag analysis             | service/env/version and flag evaluations        | Configure; comparison is association, not causal proof                                             |
+| Support handoff / annotations         | Replay links, comments and playlists            | Native/configure; no automatic public/external sharing                                             |
+| Export / warehouse analysis           | RUM exports/APIs and downstream pipeline        | Configure; limits/retention differ; not full-replay export parity                                  |
+| AI feedback-source consolidation      | Separate feedback integration                   | Gap/custom; native multi-source equivalent not established                                         |
+| Natural-language product questions    | Bits Chat with available tools/data             | Configure; actual RUM tool access must be verified                                                 |
+| MCP / coding-agent handoff            | Datadog MCP and Claude evidence package         | Configure; code changes remain reviewed                                                            |
+| Automatic fix-agent dispatch          | Bits Code and supported Fix with Bits handoffs  | Configure; supported source integration, evidence, reviewed patch/PR; no automatic dispatch here   |
+| Privacy and masking                   | Consent, SDK filtering and Datadog roles        | Configure; DOM masking does not scrub all event fields                                             |
 
 ## Replacement acceptance
 
@@ -78,3 +78,7 @@ cost and data policy in that environment.
 
 Datadog routes and proposed implementation are our assessment of the documented capabilities.
 Unknown or unverified equivalence stays marked partial/custom or gap.
+
+The [2026-10-03 feature review](RUM_BITS_FIX_WORKFLOW.md) adds optional native Usability Issue
+Detection and RUM multi-view/operation investigations plus source-linked Bits Code handoffs.
+These do not establish identical Galileo coverage or enable autonomous remediation.

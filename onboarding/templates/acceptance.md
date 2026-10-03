@@ -32,3 +32,11 @@ checks, pseudonymous identity/consent lifecycle, and actual event-field mappings
 RUM resource links to a retained trace and its actual infrastructure resource; record missing hops.
 Validate both Notebook cell plans and real session/summary/investigation links before declaring
 segment reporting ready. Outcome-only context does not establish view/session-wide attribution.
+
+## Product Analytics, optional features and source fix readiness
+
+Confirm Product Analytics is enabled per application and verify its dataset separately from retained
+RUM/replays. Complete feature-readiness.json using actual site/access evidence; optional unavailable
+features do not block core onboarding. Review saved funnels, profile/segment identity and account
+clearing. Validate deployed source resolution and Bits setup using source-code-readiness.md.
+A fix pilot needs regression tests and matched-segment post-release evidence, not just a green PR.

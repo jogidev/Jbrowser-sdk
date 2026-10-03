@@ -22,3 +22,8 @@ Bits prompt and must match the user's requested scope; production deployment is 
 Define approved product line/type and user-group context at event time using docs/RUM_SEGMENTATION.md.
 Validate unknown, multi-product and identity-switch behavior; confirm resource-to-trace-to-infrastructure
 links. Hand off the generated segmentation meta-prompt and both Notebook cell templates to Bits.
+
+Review docs/RUM_BITS_FIX_WORKFLOW.md and generated feature/source readiness files. Check Product
+Analytics enablement, Preview access and optional profiling/operations against actual SDK and tenant.
+Verify source maps and deployed revision mapping in the actual app/backend repos. Do not connect
+source providers, upload source, grant write rights or enable automations merely from generation.

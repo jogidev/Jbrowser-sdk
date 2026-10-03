@@ -32,3 +32,5 @@ When making changes that impact development workflows or architecture, update th
 - [Product Analytics event conventions](PRODUCT_ANALYTICS.md)
 - [Fork scope and maintenance](FORK_MAINTENANCE.md)
 - [Original upstream README](UPSTREAM_README.md)
+
+See [Product Analytics/Preview readiness and Bits fixes](RUM_BITS_FIX_WORKFLOW.md).

@@ -117,3 +117,12 @@ Sources: [RUM AI investigations](https://docs.datadoghq.com/real_user_monitoring
 [RUM export to Notebooks](https://docs.datadoghq.com/real_user_monitoring/explorer/export/),
 [Bits Chat](https://docs.datadoghq.com/bits_ai/bits_chat/),
 [User/account trace propagation](https://docs.datadoghq.com/tracing/guide/users-accounts/).
+
+## Optional feature and fix routing
+
+Inspect feature-readiness.json and source-code-readiness.md. When actually available, use saved-funnel
+Usability Issue Detection for friction, multi-view investigation for recurring supported-vital
+bottlenecks, and operation investigation for defined technical steps (requires RUM without Limits).
+Verify Preview access, site and permissions before invoking tools; otherwise use manual evidence.
+For code-attributed findings, complete bits-fix-handoff-prompt.md with actual revision and evidence.
+No preview features, source write access, experiments or remediation automations are enabled here.

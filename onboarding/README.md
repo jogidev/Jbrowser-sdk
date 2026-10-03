@@ -43,6 +43,9 @@ mismatches stop generation; mixed/frameworkless projects need explicit review.
 | `bits-segmentation-meta-prompt.md` | Product/user segmentation and correlated investigation meta-prompt        |
 | `segment-report-notebook.md`       | Product-segment Notebook cell plan                                        |
 | `worst-experience-notebook.md`     | Per-session RUM/APM/infrastructure Notebook cell plan                     |
+| `feature-readiness.json`           | Optional feature/Preview eligibility inventory; tenant status unknown     |
+| `source-code-readiness.md`         | App/backend repo, deployed source revision and Bits setup evidence        |
+| `bits-fix-handoff-prompt.md`       | Evidence-based patch, tests, PR and post-release verification handoff     |
 | `README.md`                        | Application handoff instructions and sample coverage explanation          |
 
 The starter requires a reviewed `beforeSend` sanitizer from the application. It deliberately does
@@ -73,3 +76,6 @@ application typechecking, browser tests, and Datadog evidence.
 Pilot one application in nonproduction. Validate consent, routes, business events, replay privacy,
 and the monitoring specification. Review cost/retention and owner readiness before repeating for
 the next application. Do not bulk-instrument or deploy applications from this generator.
+
+See [the Bits fix workflow](../docs/RUM_BITS_FIX_WORKFLOW.md) for Product Analytics, Preview
+selection and source integration. Generation enables no optional feature or repository integration.

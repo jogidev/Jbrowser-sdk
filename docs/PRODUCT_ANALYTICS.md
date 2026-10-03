@@ -50,3 +50,37 @@ Automatic click tracking and explicit outcome actions serve different questions;
 
 See [tracking user actions](https://docs.datadoghq.com/real_user_monitoring/application_monitoring/browser/tracking_user_actions/)
 and [the public RUM API](../packages/browser-rum-core/src/boot/rumPublicApi.ts).
+
+## Product Analytics readiness and investigation
+
+Reviewed 2026-10-03. Product Analytics is a dedicated product, enabled per application; installing
+the RUM SDK alone does not verify its activation. [Retention and Pathways moved out of RUM
+Preview in June 2025](https://docs.datadoghq.com/product_analytics/guide/rum_and_product_analytics/).
+Check the actual behavioral dataset, consent and collection mode separately from retained RUM
+diagnostics and sampled replays. Default behavioral retention is documented as 15 months, but
+confirm tenant settings; do not promise expired replay evidence remains watchable.
+
+| Product question                      | Configure and verify                                                               | Investigation handoff                                                                   |
+| ------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Which products and roles use the app? | Event-time product line/type and user group; native segments where appropriate     | [Segment report and membership overlap](RUM_SEGMENTATION.md)                            |
+| Where do customers stop?              | Saved ordered funnel, journey boundaries, attribution and comparable controls      | Preview Usability Issue Detection when licensed/enabled; replay and related errors      |
+| Which journeys regress?               | Conversion/time-to-convert, release/device breakdown and confirmed outcomes        | Optional Journey Monitoring and defined RUM operations                                  |
+| Who returns?                          | Initial/return event, period, approved stable identity and native retention        | Native chart or Preview retention widget if available                                   |
+| Which accounts are impacted?          | Approved pseudonymous user/account profiles, tested login/logout/account switching | Linked sessions/traces only when supported; identity baggage separately reviewed        |
+| Did a change help?                    | Matched before/after populations and uncertainty                                   | Explicit Experiments design if requested; release correlation alone is not causal proof |
+
+[User/account profiles](https://docs.datadoghq.com/product_analytics/profiles/) support approved
+attributes and optional enrichment; avoid importing sensitive customer records by default. Profile
+attributes can reflect latest values, so do not replace historical event-time product attribution
+with current profile fields. Using account profiles requires SDK-supported account clearing on
+logout/switch; the generated v7 identity helper now clears both user and account.
+
+The [Product Analytics overview](https://docs.datadoghq.com/product_analytics/) also documents
+server-side events. Consider them for backend-confirmed outcomes missing from browser telemetry.
+Keep ingestion credentials server-side and define event ownership, identity/consent scope and
+deduplication across client/server before implementation. Do not count a server outcome and its
+browser confirmation as two conversions or assume native deduplication without verifying schema.
+
+Use [the optional feature and Bits workflow](RUM_BITS_FIX_WORKFLOW.md) and generated readiness
+inventory. Preview enrollment, profiling, source uploads and source write permissions require
+application/tenant setup; the local generator supplies a specification and evidence checklist.
