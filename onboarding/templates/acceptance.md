@@ -24,3 +24,11 @@
 Completion states: **configured**, **emitting**, **verified**, **blocked**, **not required**.
 Record screenshots or URLs from the actual tenant in the internal application repo. A generated
 starter, successful installation, or passing build alone is not evidence that Datadog received data.
+
+## Segmentation and correlation evidence
+
+Record approved product line/type and role mapping, unknown values, multi-product and account-switch
+checks, pseudonymous identity/consent lifecycle, and actual event-field mappings. Verify a selected
+RUM resource links to a retained trace and its actual infrastructure resource; record missing hops.
+Validate both Notebook cell plans and real session/summary/investigation links before declaring
+segment reporting ready. Outcome-only context does not establish view/session-wide attribution.

@@ -90,7 +90,15 @@ export function validateManifest(m) {
     m.contextValues && typeof m.contextValues === 'object' && !Array.isArray(m.contextValues),
     'Provide contextValues'
   )
-  const permittedContext = new Set(['product_line', 'channel', 'journey_step', 'outcome', 'document_type'])
+  const permittedContext = new Set([
+    'product_line',
+    'product_type',
+    'user_group',
+    'channel',
+    'journey_step',
+    'outcome',
+    'document_type',
+  ])
   for (const [key, values] of Object.entries(m.contextValues)) {
     assert(permittedContext.has(key), `Unsupported business context: ${key}`)
     assert(Array.isArray(values) && values.length > 0 && values.length <= 50, 'Context needs 1..50 bounded values')
@@ -140,6 +148,7 @@ function configSource(m) {
     trackUserInteractions: true,
     trackResources: true,
     trackLongTasks: true,
+    propagateTraceBaggage: false,
   }
   return `// Starter for the published Browser SDK v7. Adapt to the application's installed version.\nimport type { RumInitConfiguration } from '@datadog/browser-rum'\n\nconst origins = new Set<string>(${JSON.stringify(m.allowedTracingOrigins)})\n\nexport const rumConfig: RumInitConfiguration = {\n  ...${JSON.stringify(config, null, 2)},\n  // Exact origin matching; backend tracing and CORS must also be configured.\n  allowedTracingUrls: origins.size ? [(url: string) => {\n    try { return origins.has(new URL(url, window.location.href).origin) } catch { return false }\n  }] : [],\n}\n`
 }
@@ -152,7 +161,7 @@ function bootstrapSource(m) {
 export function buildBundle(manifest, detected = { framework: 'unknown', existingDatadog: [] }) {
   const m = validateManifest(manifest)
   const scope = `@application.id:${m.applicationId} service:${m.service} env:${m.environment}`
-  const context = `Application: ${m.application}\nService: ${m.service}\nOwner: ${m.owner}\nEnvironment: ${m.environment}\nSite: ${m.datadogSite}\nRelease: ${m.release}\nRUM application ID: ${m.applicationId}\nJourneys: ${JSON.stringify(m.journeys)}\nSampling: sessions=${m.sessionSampleRate}%, replay=${m.sessionReplaySampleRate}% of sampled sessions\nObserved framework: ${detected.framework}; requested framework: ${m.framework}\n`
+  const context = `Application: ${m.application}\nService: ${m.service}\nOwner: ${m.owner}\nEnvironment: ${m.environment}\nSite: ${m.datadogSite}\nRelease: ${m.release}\nRUM application ID: ${m.applicationId}\nApproved business context: ${JSON.stringify(m.contextValues)}\nJourneys: ${JSON.stringify(m.journeys)}\nSampling: sessions=${m.sessionSampleRate}%, replay=${m.sessionReplaySampleRate}% of sampled sessions\nObserved framework: ${detected.framework}; requested framework: ${m.framework}\n`
   const bitsTemplate = fs.readFileSync(path.join(root, 'templates', 'bits-monitoring-prompt.md'), 'utf8')
   const acceptance = fs.readFileSync(path.join(root, 'templates', 'acceptance.md'), 'utf8')
   const blueprint = JSON.parse(fs.readFileSync(path.join(root, 'templates', 'monitoring-blueprint.json'), 'utf8'))
@@ -170,10 +179,16 @@ export function buildBundle(manifest, detected = { framework: 'unknown', existin
     'rum-config.ts': configSource(m),
     'rum-bootstrap.ts': bootstrapSource(m),
     'bits-monitoring-prompt.md': bitsTemplate.replace('{{APPLICATION_CONTEXT}}', context),
+    ...Object.fromEntries(
+      ['bits-segmentation-meta-prompt.md', 'segment-report-notebook.md', 'worst-experience-notebook.md'].map((name) => [
+        name,
+        fs.readFileSync(path.join(root, 'templates', name), 'utf8').replace('{{APPLICATION_CONTEXT}}', context),
+      ])
+    ),
     'monitoring-blueprint.json': JSON.stringify(blueprint, null, 2) + '\n',
     'acceptance.md': `# ${m.application} onboarding evidence\n\n${context}\n\n${acceptance}`,
-    'claude-onboarding-prompt.md': `# Paste into Claude Code in the target application\n\nUsing the official skill at https://github.com/datadog-labs/agent-skills/blob/main/dd-orchestrator/SKILL.md, set up Datadog Real User Monitoring, Error Tracking, Session Replay, and Product Analytics in this project.\n\n${context}\n\nUse application.json and the generated starter files as requirements, not as an instruction to overwrite existing instrumentation. Inspect the actual framework and installed SDK version first. Preserve the official tool's authentication, consent, and permission steps. Explain unsupported steps or framework mismatches. Reuse existing initialization; install published packages with this application's package manager. Implement explicit consent, reviewed beforeSend filtering, masked replay, bounded action context, stable route names, and backend-confirmed business outcomes. Keep API/application keys out of browser code. Use acceptance.md to record evidence. Do not declare completion from a successful build alone. Creating Datadog dashboards/monitors and production deployment are separate actions.\n`,
-    'README.md': `# ${m.application} onboarding bundle\n\nGenerated locally; not deployed, provisioned, or telemetry-verified.\n\n1. Keep this bundle in the target application's internal workspace. Replace configuration placeholders.\n2. Connect Claude Code to Datadog's onboarding MCP endpoint for the selected site and complete OAuth.\n3. Paste claude-onboarding-prompt.md in Claude Code from the application root.\n4. Adapt rum-config.ts and rum-bootstrap.ts to the installed SDK and existing initialization. Supply the required beforeSend sanitizer and connect the consent manager.\n5. Complete acceptance.md using browser and Datadog evidence.\n6. Paste bits-monitoring-prompt.md into Bits Chat to draft the monitoring template. Verify permissions and feature availability.\n\nmonitoring-blueprint.json is an implementation specification, NOT Datadog dashboard API JSON.\n\nQuery scope example (verify attributes in your tenant): \`${scope}\`. The application selector can also scope Explorer searches. Replay rate is conditional on sampled sessions; ${m.sessionSampleRate}% x ${m.sessionReplaySampleRate}% gives approximately ${((m.sessionSampleRate * m.sessionReplaySampleRate) / 100).toFixed(2)}% of eligible consenting sessions under independent percentage sampling, before collection loss. This is not a billing estimate.\n\nNo browser logs or request/response-body collection is enabled by this bundle. Set up scrubbed browser logging separately if needed. GovCloud sites require a supported alternative to the remote MCP path.\n`,
+    'claude-onboarding-prompt.md': `# Paste into Claude Code in the target application\n\nUsing the official skill at https://github.com/datadog-labs/agent-skills/blob/main/dd-orchestrator/SKILL.md, set up Datadog Real User Monitoring, Error Tracking, Session Replay, and Product Analytics in this project.\n\n${context}\n\nUse application.json and the generated starter files as requirements, not as an instruction to overwrite existing instrumentation. Inspect the actual framework and installed SDK version first. Preserve the official tool's authentication, consent, and permission steps. Explain unsupported steps or framework mismatches. Reuse existing initialization; install published packages with this application's package manager. Implement explicit consent, reviewed beforeSend filtering, masked replay, bounded action context, stable route names, and backend-confirmed business outcomes. Keep API/application keys out of browser code. Define approved product_type and user_group context at event time, preserve unknown values, prevent stale product attribution and verify trace-to-infrastructure linkage. Do not propagate identity baggage without review. Use acceptance.md to record evidence. Do not declare completion from a successful build alone. Creating Datadog dashboards/monitors and production deployment are separate actions.\n`,
+    'README.md': `# ${m.application} onboarding bundle\n\nGenerated locally; not deployed, provisioned, or telemetry-verified.\n\n1. Keep this bundle in the target application's internal workspace. Replace configuration placeholders.\n2. Connect Claude Code to Datadog's onboarding MCP endpoint for the selected site and complete OAuth.\n3. Paste claude-onboarding-prompt.md in Claude Code from the application root.\n4. Adapt rum-config.ts and rum-bootstrap.ts to the installed SDK and existing initialization. Supply the required beforeSend sanitizer and connect the consent manager.\n5. Complete acceptance.md using browser and Datadog evidence.\n6. Paste bits-monitoring-prompt.md into Bits Chat to draft the monitoring template. Verify permissions and feature availability.\n7. Paste bits-segmentation-meta-prompt.md into Bits Chat for product/user-group reports and session investigations. Use segment-report-notebook.md and worst-experience-notebook.md as cell plans; create resources only when requested.\n\nmonitoring-blueprint.json is an implementation specification, NOT Datadog dashboard API JSON.\n\nQuery scope example (verify attributes in your tenant): \`${scope}\`. The application selector can also scope Explorer searches. Replay rate is conditional on sampled sessions; ${m.sessionSampleRate}% x ${m.sessionReplaySampleRate}% gives approximately ${((m.sessionSampleRate * m.sessionReplaySampleRate) / 100).toFixed(2)}% of eligible consenting sessions under independent percentage sampling, before collection loss. This is not a billing estimate.\n\nNo browser logs or request/response-body collection is enabled by this bundle. Set up scrubbed browser logging separately if needed. GovCloud sites require a supported alternative to the remote MCP path.\n`,
   }
 }
 

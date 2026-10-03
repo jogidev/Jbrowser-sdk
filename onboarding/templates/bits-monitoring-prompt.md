@@ -128,3 +128,6 @@ Documentation: [Bits Chat](https://docs.datadoghq.com/bits_ai/bits_chat/),
 [RUM monitors](https://docs.datadoghq.com/monitors/types/real_user_monitoring/),
 [Product Analytics](https://docs.datadoghq.com/product_analytics/),
 [Core Web Vitals](https://web.dev/articles/vitals).
+
+For product/user-group reporting and correlated poor-experience Notebooks, run the generated
+`bits-segmentation-meta-prompt.md` after validating event-time product attribution and identity coverage.

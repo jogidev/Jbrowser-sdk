@@ -20,7 +20,7 @@ flowchart TD
 | Step       | Application team does                                      | Completion evidence                                          |
 | ---------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 | Prepare    | Fill one manifest; identify init owner and journeys        | Reviewed settings, framework and event definitions           |
-| Generate   | Run the dependency-free Node command                       | Nine local starter/handoff files; no remote changes          |
+| Generate   | Run the dependency-free Node command                       | Twelve local starter/handoff files; no remote changes        |
 | Instrument | Use official Datadog onboarding from the application root  | Reviewed app changes and SDK configuration                   |
 | Verify     | Test consent, identity, route changes, outcomes and intake | Completed generated acceptance table                         |
 | Monitor    | Paste the generated Bits prompt; verify proposed resources | Scoped dashboard, native-view links and owner-ready monitors |
@@ -113,6 +113,12 @@ The acceptance table keeps those completion states separate.
 - Choose sampling and retention intentionally. A 10% session rate with 20% conditional replay
   sampling gives roughly 2% replay coverage under that sampling model, before collection loss.
   RUM without Limits and Product Analytics traffic/retention settings require tenant-specific review.
+
+## Segment reports and investigations
+
+Use [product segmentation and Notebooks](RUM_SEGMENTATION.md) to define product line/type and
+approved user groups during onboarding. The twelve-file bundle includes a Bits meta-prompt and
+two Notebook cell plans for segment reports and poor-experience session/APM/infrastructure cases.
 
 ## Troubleshooting
 

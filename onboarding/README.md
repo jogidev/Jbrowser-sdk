@@ -30,22 +30,29 @@ mismatches stop generation; mixed/frameworkless projects need explicit review.
 
 ## Generated files
 
-| File                          | Use                                                                       |
-| ----------------------------- | ------------------------------------------------------------------------- |
-| `application.json`            | Reviewed settings and event dictionary                                    |
-| `detection.json`              | Package-based framework and installed Datadog versions                    |
-| `rum-config.ts`               | Browser SDK v7 configuration starter; compare with installed version      |
-| `rum-bootstrap.ts`            | Initialization guard, consent lifecycle and bounded outcome-action helper |
-| `claude-onboarding-prompt.md` | Application-specific official onboarding request                          |
-| `acceptance.md`               | Technical, privacy, analytics and telemetry verification evidence         |
-| `bits-monitoring-prompt.md`   | Application-specific standard monitoring request for Bits Chat            |
-| `monitoring-blueprint.json`   | Implementation specification, **not Datadog API/import JSON**             |
-| `README.md`                   | Application handoff instructions and sample coverage explanation          |
+| File                               | Use                                                                       |
+| ---------------------------------- | ------------------------------------------------------------------------- |
+| `application.json`                 | Reviewed settings and event dictionary                                    |
+| `detection.json`                   | Package-based framework and installed Datadog versions                    |
+| `rum-config.ts`                    | Browser SDK v7 configuration starter; compare with installed version      |
+| `rum-bootstrap.ts`                 | Initialization guard, consent lifecycle and bounded outcome-action helper |
+| `claude-onboarding-prompt.md`      | Application-specific official onboarding request                          |
+| `acceptance.md`                    | Technical, privacy, analytics and telemetry verification evidence         |
+| `bits-monitoring-prompt.md`        | Application-specific standard monitoring request for Bits Chat            |
+| `monitoring-blueprint.json`        | Implementation specification, **not Datadog API/import JSON**             |
+| `bits-segmentation-meta-prompt.md` | Product/user segmentation and correlated investigation meta-prompt        |
+| `segment-report-notebook.md`       | Product-segment Notebook cell plan                                        |
+| `worst-experience-notebook.md`     | Per-session RUM/APM/infrastructure Notebook cell plan                     |
+| `README.md`                        | Application handoff instructions and sample coverage explanation          |
 
 The starter requires a reviewed `beforeSend` sanitizer from the application. It deliberately does
 not invent one for your data. Replay masking and bounded business context do not scrub every
 URL, error message, view name, log or identity field. Use a single host-owned initializer for
 microfrontends; copies of the SDK can bypass a per-SDK duplicate-init guard.
+
+The generated v7 configuration explicitly disables user/account trace baggage propagation with
+`propagateTraceBaggage: false`; change this only after reviewing identity exposure across services.
+Product context and trace ID correlation do not require user identity baggage.
 
 The context allowlist prevents accidental extra fields; it does not certify that values are
 nonsensitive. Review the manifest itself. Do not commit real generated application bundles into

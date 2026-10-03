@@ -13,12 +13,13 @@ test('bundle uses declared scope without API keys and remains a specification', 
   const m = example()
   m.allowedTracingOrigins = ['https://api.example.com']
   const files = buildBundle(m)
-  assert.equal(Object.keys(files).length, 9)
+  assert.equal(Object.keys(files).length, 12)
   const blueprint = JSON.parse(files['monitoring-blueprint.json'])
   assert.equal(blueprint.applicationScope.service, m.service)
   assert.match(blueprint.artifactType, /not-datadog-api-json/)
   assert.match(files['rum-config.ts'], /https:\/\/api\.example\.com/)
   assert.match(files['rum-config.ts'], /trackingConsent.*not-granted/)
+  assert.match(files['rum-config.ts'], /propagateTraceBaggage.*false/)
   assert.match(files['rum-bootstrap.ts'], /getInitConfiguration/)
   assert.match(files['rum-bootstrap.ts'], /A reviewed beforeSend sanitizer is required/)
   assert.match(files['bits-monitoring-prompt.md'], /specialty-portal-web/)
@@ -141,7 +142,7 @@ test('writes only a new bundle and refuses to overwrite existing output', () => 
     const manifest = path.join(temp, 'application.json')
     fs.writeFileSync(manifest, JSON.stringify(example()))
     const out = path.join(temp, 'bundle')
-    assert.equal(generate(manifest, app, out).files.length, 9)
+    assert.equal(generate(manifest, app, out).files.length, 12)
     assert.equal(fs.readFileSync(path.join(app, 'package.json'), 'utf8'), pkgText)
     assert.deepEqual(fs.readdirSync(app), ['package.json'])
     const before = fs.readFileSync(path.join(out, 'rum-config.ts'), 'utf8')
@@ -165,4 +166,22 @@ test('framework mismatch fails before creating output', () => {
   } finally {
     fs.rmSync(temp, { recursive: true })
   }
+})
+
+test('segmentation handoffs inherit bounded context and exclude credentials', () => {
+  const m = example()
+  m.clientToken = 'sensitive-browser-token'
+  const bundle = buildBundle(m)
+  for (const name of [
+    'bits-segmentation-meta-prompt.md',
+    'segment-report-notebook.md',
+    'worst-experience-notebook.md',
+  ]) {
+    assert.match(bundle[name], /specialty-portal-web/)
+    assert.match(bundle[name], /commercial_property/)
+    assert.match(bundle[name], /user_group/)
+    assert.doesNotMatch(bundle[name], /sensitive-browser-token|\{\{APPLICATION_CONTEXT\}\}/)
+  }
+  assert.match(bundle['rum-bootstrap.ts'], /product_type/)
+  assert.match(bundle['rum-bootstrap.ts'], /user_group/)
 })

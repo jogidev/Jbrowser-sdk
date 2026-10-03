@@ -3,6 +3,7 @@
 ## Application team entry points
 
 - [Visual RUM onboarding guide](RUM_ONBOARDING.md)
+- [Product segmentation and investigation Notebooks](RUM_SEGMENTATION.md)
 - [Monitoring standard and layout](RUM_MONITORING_TEMPLATE.md)
 - [LogRocket coverage and honest gaps](LOGROCKET_COVERAGE.md)
 - [Local starter generator](../onboarding/README.md)
