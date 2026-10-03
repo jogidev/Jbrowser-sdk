@@ -1,5 +1,9 @@
 # Web application observability
 
+For the simplified setup workflow, use [the visual onboarding guide](RUM_ONBOARDING.md) and
+[local starter generator](../onboarding/README.md). Then apply
+[Web Experience Standard v1](RUM_MONITORING_TEMPLATE.md) with the generated Bits prompt.
+
 Use this fork as a source reference and a Claude Code workspace for applications using Datadog
 RUM, Session Replay, Error Tracking, browser logs, and Product Analytics. Application teams should
 normally install the published Datadog packages in their own application repositories. Cloning

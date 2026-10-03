@@ -8,6 +8,11 @@ source, package names, licenses, and dependency graph are preserved.
 
 ## Start here
 
+For the simplest application setup, start with [RUM onboarding](docs/RUM_ONBOARDING.md).
+Generate a local bundle, use official Datadog agentic setup in the application repo, and paste
+the generated Bits prompt to draft the [monitoring standard](docs/RUM_MONITORING_TEMPLATE.md).
+See [LogRocket feature coverage and gaps](docs/LOGROCKET_COVERAGE.md).
+
 | Goal                                                          | Guide                                                            |
 | ------------------------------------------------------------- | ---------------------------------------------------------------- |
 | Find the relevant SDK packages and onboard an application     | [Web application observability](docs/ENTERPRISE_RUM.md)          |
@@ -18,6 +23,9 @@ source, package names, licenses, and dependency graph are preserved.
 | Understand SDK architecture and tests                         | [Architecture](docs/ARCHITECTURE.md), [Testing](docs/TESTING.md) |
 
 ## Claude Code
+
+Use `/rum-onboard <application repository path>` for the guided onboarding workflow and
+`/rum-monitoring-template <application>` for the standard monitoring specification.
 
 Use `/rum-audit <application repository path>` to inspect existing instrumentation and
 `/rum-instrument <application repository path>` to implement requested instrumentation.

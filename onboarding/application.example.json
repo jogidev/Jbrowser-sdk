@@ -1,0 +1,30 @@
+{
+  "application": "specialty-portal",
+  "service": "specialty-portal-web",
+  "owner": "portal-team",
+  "framework": "angular",
+  "environment": "staging",
+  "release": "<RELEASE_VERSION>",
+  "datadogSite": "datadoghq.com",
+  "applicationId": "<RUM_APPLICATION_ID>",
+  "clientToken": "<BROWSER_CLIENT_TOKEN>",
+  "sessionSampleRate": 10,
+  "sessionReplaySampleRate": 0,
+  "allowedTracingOrigins": [],
+  "journeys": [
+    {
+      "name": "quote",
+      "steps": ["quote.started", "quote.reviewed", "quote.submitted"]
+    },
+    {
+      "name": "claim",
+      "steps": ["claim.started", "claim.reviewed", "claim.submitted"]
+    }
+  ],
+  "contextValues": {
+    "product_line": ["specialty", "casualty", "property"],
+    "channel": ["broker", "direct"],
+    "journey_step": ["start", "review", "submission"],
+    "outcome": ["success", "validation_failed", "service_failed", "cancelled"]
+  }
+}

@@ -4,6 +4,11 @@ Browser SDK for collecting Real User Monitoring (RUM) and logging data from web 
 
 ## Fork scope
 
+The dependency-free starter is `onboarding/generate.mjs`; run its checks with
+`node --test onboarding/generate.test.mjs`. Start application onboarding with
+`docs/RUM_ONBOARDING.md`. Monitoring specifications and the Bits prompt must distinguish native
+features, additional configuration, custom workflows and gaps; do not invent tenant evidence.
+
 This fork supports enterprise RUM, Session Replay, browser logs, Error Tracking, and Product
 Analytics work with Claude Code. Start with `docs/ENTERPRISE_RUM.md` for package mapping and
 application onboarding, `docs/PRODUCT_ANALYTICS.md` for event conventions, and
