@@ -39103,7 +39103,7 @@
       "type": "library",
       "bom-ref": "component-790df1b2a22a43417ab0978cf47178c2b051296ff98bda0ad2131750fa2ed70c",
       "name": "sf-lwc-app",
-      "version": "0.0.0-use.local",
+      "version": "0.0.0",
       "properties": [
         {
           "name": "yarn:locator",

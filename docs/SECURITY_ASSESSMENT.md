@@ -66,7 +66,7 @@ Keep development assets off public endpoints and production deployment paths.
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | Immutable root install with lifecycle scripts skipped | Passed; existing Angular peer-version warnings remain                                                      |
 | SDK workspace build and TypeScript project checks     | Passed                                                                                                     |
-| Onboarding and SBOM regressions                       | All 24 passed, including POSIX permissions                                                                 |
+| Onboarding and SBOM regressions                       | All 25 passed, including POSIX permissions                                                                 |
 | Changed code lint / formatting                        | Passed                                                                                                     |
 | CycloneDX 1.6 official JSON schema                    | Passed with Ajv; format keywords disabled for schema check                                                 |
 | Full lockfile inventory                               | All 2,159 unique resolved locators across 14 lockfiles represented; graph edges resolve                    |

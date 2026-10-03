@@ -84,6 +84,20 @@ export function buildBom(inventories, lockHashes) {
     dependencies: [{ ref: 'repository', dependsOn: components.map((c) => c['bom-ref']) }, ...dependencies],
   }
 }
+export function workspaceVersions(rows, projectDirectory) {
+  return rows.map((row) => {
+    const locator = normalizeLocator(row.value)
+    const marker = '@workspace:'
+    const index = locator.indexOf(marker)
+    if (index < 0) {
+      return row
+    }
+    const manifest = JSON.parse(
+      fs.readFileSync(path.resolve(projectDirectory, locator.slice(index + marker.length), 'package.json'), 'utf8')
+    )
+    return { ...row, children: { ...row.children, Version: manifest.version ?? '0.0.0' } }
+  })
+}
 export function generateSbom() {
   const inventories = []
   const hashes = {}
@@ -92,7 +106,10 @@ export function generateSbom() {
     if (result.status !== 0) {
       throw new Error(`Inventory failed for ${lockfile}: ${result.stderr || result.stdout}`)
     }
-    inventories.push({ lockfile, rows: ndjson(result.stdout) })
+    inventories.push({
+      lockfile,
+      rows: workspaceVersions(ndjson(result.stdout), path.join(root, path.dirname(lockfile))),
+    })
     hashes[lockfile] = sha256(fs.readFileSync(path.join(root, lockfile), 'utf8').replace(/\r\n/g, '\n'))
   }
   const bom = buildBom(inventories, hashes)
