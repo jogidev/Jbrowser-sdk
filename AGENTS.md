@@ -2,6 +2,17 @@
 
 Browser SDK for collecting Real User Monitoring (RUM) and logging data from web applications.
 
+## Fork scope
+
+This fork supports enterprise RUM, Session Replay, browser logs, Error Tracking, and Product
+Analytics work with Claude Code. Start with `docs/ENTERPRISE_RUM.md` for package mapping and
+application onboarding, `docs/PRODUCT_ANALYTICS.md` for event conventions, and
+`docs/FORK_MAINTENANCE.md` for retained dependencies and upstream-only automation.
+
+Prefer instrumentation changes in the target application repository using its installed public
+SDK version. Product Analytics dashboards and funnels require Datadog platform configuration.
+Preserve the SDK workspace dependency graph and generated-file rules when modifying this fork.
+
 ## Package Manager
 
 This project uses Yarn workspaces (latest version). Never use `npm` or `npx`.

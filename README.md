@@ -1,74 +1,46 @@
-# Datadog Browser SDK
+# Jbrowser-sdk
 
-Collect and send browser data to Datadog.
+Datadog Browser SDK fork for teams using RUM, Session Replay, Error Tracking, browser logs,
+and Product Analytics across web applications, with Claude Code guidance.
 
-## Getting Started
+Forked from [DataDog/browser-sdk](https://github.com/DataDog/browser-sdk). The original SDK
+source, package names, licenses, and dependency graph are preserved.
 
-### Log collection
+## Start here
 
-See the dedicated [Datadog Browser Log Collection documentation][08] to learn how to forward logs from your browser application to Datadog.
+| Goal                                                          | Guide                                                            |
+| ------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Find the relevant SDK packages and onboard an application     | [Web application observability](docs/ENTERPRISE_RUM.md)          |
+| Define business events and Product Analytics inputs           | [Event conventions](docs/PRODUCT_ANALYTICS.md)                   |
+| Understand cleanup, build prerequisites, and upstream updates | [Fork maintenance](docs/FORK_MAINTENANCE.md)                     |
+| Work with Claude Code                                         | [CLAUDE.md](CLAUDE.md) and [AGENTS.md](AGENTS.md)                |
+| Read the original install/package/CDN instructions            | [Upstream README](docs/UPSTREAM_README.md)                       |
+| Understand SDK architecture and tests                         | [Architecture](docs/ARCHITECTURE.md), [Testing](docs/TESTING.md) |
 
-### Real User Monitoring
+## Claude Code
 
-See the dedicated [Datadog Browser RUM Collection documentation][18] to learn how to send RUM data from your browser application to Datadog.
+Use `/rum-audit <application repository path>` to inspect existing instrumentation and
+`/rum-instrument <application repository path>` to implement requested instrumentation.
+The target application must be accessible locally; these commands do not connect Datadog accounts.
 
-### API Reference
+Application teams should normally use published `@datadog/browser-rum` and
+`@datadog/browser-logs` packages in their application repositories. This fork is a source and
+engineering workspace; it does not deploy telemetry or configure dashboards by itself.
+Product Analytics funnels and retention are configured in Datadog using collected browser events.
 
-For detailed API information, see the [Datadog Browser SDK API Reference][71].
+## SDK development
 
-## npm packages
+Use Node and Yarn versions pinned in `package.json`. See [fork maintenance](docs/FORK_MAINTENANCE.md)
+for retained upstream-only tooling and prerequisites.
 
-This repository contains several packages:
+```bash
+yarn install --immutable
+yarn build
+yarn typecheck
+yarn test:unit
+```
 
-| Package          | npm                      | size                     |
-| ---------------- | ------------------------ | ------------------------ |
-| browser-logs     | [![npm version][01]][02] | [![bundle size][03]][04] |
-| browser-rum      | [![npm version][11]][12] | [![bundle size][13]][14] |
-| browser-rum-slim | [![npm version][21]][22] | [![bundle size][23]][24] |
-| browser-rum-core | [![npm version][51]][52] | [![bundle size][53]][54] |
-| browser-worker   | [![npm version][61]][62] | [![bundle size][63]][64] |
-| browser-core     | [![npm version][41]][42] | [![bundle size][43]][44] |
+## License
 
-## CDN bundles
-
-Datadog provides one CDN bundle per [site][70]:
-
-| Site    | logs                                                           | rum                                                           | rum-slim                                                           |
-| ------- | -------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------ |
-| US1     | https://www.datadoghq-browser-agent.com/us1/v7/datadog-logs.js | https://www.datadoghq-browser-agent.com/us1/v7/datadog-rum.js | https://www.datadoghq-browser-agent.com/us1/v7/datadog-rum-slim.js |
-| US3     | https://www.datadoghq-browser-agent.com/us3/v7/datadog-logs.js | https://www.datadoghq-browser-agent.com/us3/v7/datadog-rum.js | https://www.datadoghq-browser-agent.com/us3/v7/datadog-rum-slim.js |
-| US5     | https://www.datadoghq-browser-agent.com/us5/v7/datadog-logs.js | https://www.datadoghq-browser-agent.com/us5/v7/datadog-rum.js | https://www.datadoghq-browser-agent.com/us5/v7/datadog-rum-slim.js |
-| EU1     | https://www.datadoghq-browser-agent.com/eu1/v7/datadog-logs.js | https://www.datadoghq-browser-agent.com/eu1/v7/datadog-rum.js | https://www.datadoghq-browser-agent.com/eu1/v7/datadog-rum-slim.js |
-| AP1     | https://www.datadoghq-browser-agent.com/ap1/v7/datadog-logs.js | https://www.datadoghq-browser-agent.com/ap1/v7/datadog-rum.js | https://www.datadoghq-browser-agent.com/ap1/v7/datadog-rum-slim.js |
-| US1-FED | https://www.datadoghq-browser-agent.com/datadog-logs-v7.js     | https://www.datadoghq-browser-agent.com/datadog-rum-v7.js     | https://www.datadoghq-browser-agent.com/datadog-rum-slim-v7.js     |
-
-[1]: https://github.githubassets.com/favicons/favicon.png
-[2]: https://imgix.datadoghq.com/img/favicons/favicon-32x32.png
-[01]: https://badge.fury.io/js/%40datadog%2Fbrowser-logs.svg
-[02]: https://badge.fury.io/js/%40datadog%2Fbrowser-logs
-[03]: https://deno.bundlejs.com/badge?q=@datadog/browser-logs&treeshake=[*]
-[04]: https://bundlejs.com/?q=@datadog/browser-logs&treeshake=[*]
-[08]: https://docs.datadoghq.com/logs/log_collection/javascript
-[11]: https://badge.fury.io/js/%40datadog%2Fbrowser-rum.svg
-[12]: https://badge.fury.io/js/%40datadog%2Fbrowser-rum
-[13]: https://deno.bundlejs.com/badge?q=@datadog/browser-rum&treeshake=[*]
-[14]: https://bundlejs.com/?q=@datadog/browser-rum&treeshake=[*]
-[18]: https://docs.datadoghq.com/real_user_monitoring/browser/
-[21]: https://badge.fury.io/js/%40datadog%2Fbrowser-rum-slim.svg
-[22]: https://badge.fury.io/js/%40datadog%2Fbrowser-rum-slim
-[23]: https://deno.bundlejs.com/badge?q=@datadog/browser-rum-slim&treeshake=[*]
-[24]: https://bundlejs.com/?q=@datadog/browser-rum-slim&treeshake=[*]
-[41]: https://badge.fury.io/js/%40datadog%2Fbrowser-core.svg
-[42]: https://badge.fury.io/js/%40datadog%2Fbrowser-core
-[43]: https://deno.bundlejs.com/badge?q=@datadog/browser-core&treeshake=[*]
-[44]: https://bundlejs.com/?q=@datadog/browser-core&treeshake=[*]
-[51]: https://badge.fury.io/js/%40datadog%2Fbrowser-rum-core.svg
-[52]: https://badge.fury.io/js/%40datadog%2Fbrowser-rum-core
-[53]: https://deno.bundlejs.com/badge?q=@datadog/browser-rum-core&treeshake=[*]
-[54]: https://bundlejs.com/?q=@datadog/browser-rum-core&treeshake=[*]
-[61]: https://badge.fury.io/js/%40datadog%2Fbrowser-worker.svg
-[62]: https://badge.fury.io/js/%40datadog%2Fbrowser-worker
-[63]: https://deno.bundlejs.com/badge?q=@datadog/browser-worker&treeshake=[*]
-[64]: https://bundlejs.com/?q=@datadog/browser-worker&treeshake=[*]
-[70]: https://docs.datadoghq.com/getting_started/site/
-[71]: https://datadoghq.dev/browser-sdk/
+[Apache License 2.0](LICENSE). Preserve [NOTICE](NOTICE), [LEGAL](LEGAL), and
+[third-party attribution](LICENSE-3rdparty.csv). This fork is not an official Datadog release.

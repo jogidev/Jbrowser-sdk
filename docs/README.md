@@ -16,3 +16,10 @@ When making changes that impact development workflows or architecture, update th
 | `docs/TESTING.md`      | Unit and E2E testing strategy and infrastructure                |
 | `scripts/AGENTS.md`    | Writing and organizing scripts                                  |
 | `test/e2e/AGENTS.md`   | E2E test writing guide (Playwright, createTest, IntakeRegistry) |
+
+## Fork guides
+
+- [Web application observability](ENTERPRISE_RUM.md)
+- [Product Analytics event conventions](PRODUCT_ANALYTICS.md)
+- [Fork scope and maintenance](FORK_MAINTENANCE.md)
+- [Original upstream README](UPSTREAM_README.md)
