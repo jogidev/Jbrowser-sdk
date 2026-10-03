@@ -37,7 +37,7 @@ export function buildBom(inventories, lockHashes) {
         name,
         version: node.row.children.Version,
         ...(isNpm
-          ? { purl: `pkg:npm/${name.replace('@', '%40')}@${encodeURIComponent(node.row.children.Version)}` }
+          ? { purl: `pkg:npm/${encodeURIComponent(name)}@${encodeURIComponent(node.row.children.Version)}` }
           : {}),
         properties: [
           { name: 'yarn:locator', value: locator },
